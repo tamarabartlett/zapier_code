@@ -7,18 +7,24 @@ from memcached_lib.memcached_client import (
     get_cached_value,
 )
 
+ONE_MB = 1024 * 1024
+
+def create_file(file_name, size):
+    with open(file_name, 'wb') as f:
+        f.write(b'0' * size)
+        f.close()
+
 class MemcachedClientTests(TestCase):
 
     def test_get_first_mb_is_one_mb(self):
         file_name = 'two_mb_file.txt'
-        with open(file_name, 'wb') as f:
-            one_mb = 1024 * 1024
-            two_mb = one_mb * 2
-            f.write(b'0' * two_mb)
+        two_mb = ONE_MB * 2
 
-            returned_file = get_one_mb_of_file(file_name)
-            file_size = os.path.getsize('two_mb_file.txt_1')
-        self.assertEqual(one_mb, file_size)
+        create_file(file_name, two_mb)
+
+        returned_file = get_one_mb_of_file(file_name)
+        file_size = os.path.getsize('two_mb_file.txt_1')
+        self.assertEqual(ONE_MB, file_size)
 
 
     def test_file_less_than_50mb_is_true(self):
@@ -30,19 +36,17 @@ class MemcachedClientTests(TestCase):
 
     def test_file_50mb_is_true(self):
         file_name = 'fifty_mb_file.txt'
-        with open(file_name, 'wb') as f:
-            one_mb = 1024 * 1024
-            fifty_mb = one_mb * 50
-            f.write(b'0' * fifty_mb)
+        fifty_mb = ONE_MB * 50
+
+        create_file(file_name, fifty_mb)
 
         self.assertTrue(file_less_than_50mb(file_name))
 
     def test_file_greater_than_50mb_is_false(self):
         file_name = 'fifty_one_mb_file.txt'
-        with open(file_name, 'wb') as f:
-            one_mb = 1024 * 1024
-            fifty_one_mb = one_mb * 51
-            f.write(b'0' * fifty_one_mb)
+        fifty_one_mb = ONE_MB * 51
+
+        create_file(file_name, fifty_one_mb)
 
         self.assertFalse(file_less_than_50mb(file_name))
 
