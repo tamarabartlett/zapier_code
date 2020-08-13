@@ -6,7 +6,7 @@ Use python 3.7.0
 
 ## To Run
 In one terminal: `memcached -m 1000`
-In another terminal: ` python interview_code/memcached_client.py` <KEY> <VALUE>
+In another terminal: ` python memcached_lib/memcached_client.py` <KEY> <VALUE>
 
 ## To Test
 `pytest`
