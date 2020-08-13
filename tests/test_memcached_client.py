@@ -47,9 +47,8 @@ class MemcachedClientTests(TestCase):
         self.assertFalse(file_less_than_50mb(file_name))
 
     def test_cached_value(self):
-        # returned_value = get_cached_value('my_key', 'my_value')
-        # self.assertEqual(returned_value.decode(), 'my_value')
-        self.assertTrue(True)
+        returned_value = get_cached_value('my_key', 'my_value')
+        self.assertEqual(returned_value.decode(), 'my_value')
 
 if __name__ == '__main__':
     unittest.main()
