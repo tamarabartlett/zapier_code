@@ -1,0 +1,2 @@
+pymemcache
+pytest~=3.0
