@@ -1,5 +1,5 @@
 from unittest import TestCase
-from interview_code.memcached_client import get_cached_value
+from memcached_lib.memcached_client import get_cached_value
 
 class MemcachedClientTests(TestCase):
 
