@@ -2,20 +2,17 @@ import os
 import sys
 from pymemcache.client.base import Client
 
-def write_one_mb_of_file(file_name):
-    f_in = open(file_name, 'rb')
-    one_mb = f_in.read(1024 * 1023)
-    f_in.close()
-
-    set_value('1_'+file_name, one_mb)
-    return one_mb
-
-def get_chunk(file_name):
+def write_file(file_name):
     f_in = open(file_name, 'rb')
     chunk = f_in.read(1024 * 1023)
+    count = 0
+    while chunk != b'':
+        print("Filename: %s_%s" % (count, file_name))
+        set_value("%s_%s" % (count, file_name), chunk)
+        count += 1
+        chunk = f_in.read(1024 * 1023)
     f_in.close()
 
-    return chunk
 
 def file_less_than_50mb(file_name):
     size = os.path.getsize(file_name)
