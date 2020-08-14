@@ -2,6 +2,15 @@ import os
 import sys
 from pymemcache.client.base import Client
 
+def cache_file(file_name):
+    if file_less_than_50mb(file_name):
+        if file_does_not_exist(file_name):
+            write_file(file_name)
+        else:
+            raise FileAlreadyExistsException("File is already in cache")
+    else:
+        raise FileTooLargeException("File must be less than 50mb")
+
 def read_file(file_name):
     f = open(file_name, "wb+")
     count = 0
@@ -11,10 +20,20 @@ def read_file(file_name):
         # there can be no more than 50 chunks
         chunk = get_value("%s_%s" % (i, file_name))
         if chunk is None:
+            # if not even one chunk had any content, the file didn't exist in cache
+            if i == 0:
+                raise FileNotFoundExcpetion("File does not exist in cache")
             break
         f.write(chunk)
-
     f.close()
+
+    return f
+
+def file_does_not_exist(file_name):
+    if get_value('0_'+file_name) is None:
+        return True
+    else:
+        return False
 
 def write_file(file_name):
     f_in = open(file_name, 'rb')
@@ -54,6 +73,15 @@ def set_many(dict):
     failed_keys = client.set_many(dict, noreply=False)
     return failed_keys
 
+
+class FileTooLargeException(Exception):
+    pass
+
+class FileNotFoundExcpetion(Exception):
+    pass
+
+class FileAlreadyExistsException(Exception):
+    pass
 
 if __name__ == '__main__':
     # write_file('memcached_lib/bigoldfile.dat')

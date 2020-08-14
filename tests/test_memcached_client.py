@@ -8,9 +8,13 @@ from memcached_lib.memcached_client import (
     file_less_than_50mb,
     write_file,
     read_file,
+    cache_file,
     get_value,
     set_value,
     set_many,
+    FileTooLargeException,
+    FileNotFoundExcpetion,
+    FileAlreadyExistsException
 )
 
 ONE_MB = 1024 * 1024
@@ -22,7 +26,31 @@ def create_file(file_name, size):
 
 class MemcachedClientTests(TestCase):
 
-        
+    def test_file_already_exists(self):
+        # The way I'm writing this, I assume we won't ever rewrite a file, which
+        # I feel is a bad assumption. If given more time, I'd probably include
+        # a flag or something to allow for overwriting a file in a cache. For now,
+        # if the file exists already, we won't overwrite
+        file_name = 'already_exists.dat'
+        create_file(file_name, ONE_MB * 3)
+
+        cache_file(file_name)
+
+        self.assertRaises(FileAlreadyExistsException, cache_file, file_name)
+
+
+    def test_file_does_not_exist(self):
+        self.assertRaises(FileNotFoundExcpetion, read_file, 'doesnt_exist.dat')
+
+
+    def test_rejects_too_large_file(self):
+        file_name = 'tests/data/fifty_one_mb_file.txt'
+        fifty_one_mb = ONE_MB * 51
+
+        create_file(file_name, fifty_one_mb)
+
+        self.assertRaises(FileTooLargeException, cache_file, file_name)
+
 
     def test_save_and_retrieved_files_are_same(self):
         write_file('tests/bigoldfile.dat')
