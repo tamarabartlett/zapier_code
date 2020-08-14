@@ -7,6 +7,7 @@ from memcached_lib.memcached_client import (
     write_file,
     get_value,
     set_value,
+    set_many,
 )
 
 ONE_MB = 1024 * 1024
@@ -54,9 +55,16 @@ class MemcachedClientTests(TestCase):
         self.assertFalse(file_less_than_50mb(file_name))
 
     def test_cached_value(self):
-        set_value('my_key', 'my_value')
+        dict = {'my_key': 'my_value'}
+        dict['my_other_key'] = 'my_other_value'
+        failed_keys = set_many(dict)
+
         returned_value = get_value('my_key')
+        returned_other_value = get_value('my_other_key')
+
         self.assertEqual(returned_value.decode(), 'my_value')
+        self.assertEqual(returned_other_value.decode(), 'my_other_value')
+
 
 if __name__ == '__main__':
     unittest.main()
