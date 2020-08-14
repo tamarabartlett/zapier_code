@@ -18,11 +18,13 @@ def file_less_than_50mb(file_name):
     return size <= 52428800
 
 
-def get_cached_value(key, value):
+def get_value(key):
+    client = Client(('localhost', 11211))
+    return client.get(key)
+
+def set_value(key, value):
     client = Client(('localhost', 11211))
     client.set(key, value)
-    return_val = client.get(key)
-    return return_val
 
 if __name__ == '__main__':
     print(get_cached_value(sys.argv[1],sys.argv[2]))

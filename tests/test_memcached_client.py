@@ -4,7 +4,8 @@ from unittest import TestCase
 from memcached_lib.memcached_client import (
     file_less_than_50mb,
     get_one_mb_of_file,
-    get_cached_value,
+    get_value,
+    set_value,
 )
 
 ONE_MB = 1024 * 1024
@@ -51,7 +52,8 @@ class MemcachedClientTests(TestCase):
         self.assertFalse(file_less_than_50mb(file_name))
 
     def test_cached_value(self):
-        returned_value = get_cached_value('my_key', 'my_value')
+        set_value('my_key', 'my_value')
+        returned_value = get_value('my_key')
         self.assertEqual(returned_value.decode(), 'my_value')
 
 if __name__ == '__main__':
