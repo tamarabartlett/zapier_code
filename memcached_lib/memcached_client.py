@@ -2,10 +2,12 @@ import os
 import sys
 from pymemcache.client.base import Client
 
+# Would normally install a linter
+
 def cache_file(file_name):
     if file_less_than_50mb(file_name):
         if file_does_not_exist(file_name):
-            write_file(file_name)
+            return write_file(file_name)
         else:
             raise FileAlreadyExistsException("File is already in cache")
     else:
@@ -29,28 +31,36 @@ def read_file(file_name):
 
     return f
 
+
+# I would probably normally make every method except read_file and cache_file
+# some kind of private method
 def file_does_not_exist(file_name):
     if get_value('0_'+file_name) is None:
         return True
     else:
         return False
 
+
 def write_file(file_name):
+    print('Writing File...')
+    chunk_size = 1024 * 1023
     f_in = open(file_name, 'rb')
 
-    chunk = f_in.read(1024 * 1023)
-    count = 0
-    key = '%s_%s' % (count, file_name)
-
+    chunk = f_in.read(chunk_size)
+    key = '0_%s' % (file_name)
     dict_to_write = {key: chunk}
+
+    chunk = f_in.read(chunk_size)
+    count = 1
     while chunk != b'':
-        chunk = f_in.read(1024 * 1023)
-        count += 1
         key = '%s_%s' % (count, file_name)
         dict_to_write[key] = chunk
+        chunk = f_in.read(chunk_size)
+        count += 1
 
     f_in.close()
-    set_many(dict_to_write)
+    failed_keys = set_many(dict_to_write)
+    return failed_keys
 
 
 def file_less_than_50mb(file_name):
@@ -69,21 +79,21 @@ def set_value(key, value):
 
 
 def set_many(dict):
+    print('SetMany...')
+    print(dict)
     client = Client(('localhost', 11211))
     failed_keys = client.set_many(dict, noreply=False)
+    print(failed_keys)
     return failed_keys
 
 
 class FileTooLargeException(Exception):
     pass
 
+
 class FileNotFoundExcpetion(Exception):
     pass
 
+
 class FileAlreadyExistsException(Exception):
     pass
-
-if __name__ == '__main__':
-    # write_file('memcached_lib/bigoldfile.dat')
-    # print("Wrote file")
-    read_file('memcached_lib/bigoldfile.dat')

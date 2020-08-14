@@ -37,7 +37,7 @@ There are three deliverables for this project:
 !! * Your library may chunk the file in any way appropriate.
 !! * Your library can key the chunks in any way appropriate.
 !! * Your library should check for file consistency to ensure the data retrieved is the same as the original data stored.
-* Your library should handle edge cases appropriately by raising an Exception or similar. Some examples of edge cases may include: trying to store a file that already exists, trying to retrieve a file that does not exist, or when a file retrieved is inconsistent/corrupt.
+!! * Your library should handle edge cases appropriately by raising an Exception or similar. Some examples of edge cases may include: trying to store a file that already exists, trying to retrieve a file that does not exist, or when a file retrieved is inconsistent/corrupt.
 !! * Your library should have at least one test.
 
 **NOTE:** you can use this command to generate a 50MB file of random data if needed:
@@ -48,7 +48,7 @@ dd if=/dev/urandom of=bigoldfile.dat bs=1048576 count=50
 
 ### API:
 
-* You may use a framework for implementing your API (`django`, `flask`, etc)
+!! * You may use a framework for implementing your API (`django`, `flask`, etc)
 * Your API should accept a POST request with file contents in the payload and store it using your library. It may be convenient to return an identifier used for retrieval at a later time.
 * Your API should accept a GET request with a file name / identifier and retrieve it using your library. The file contents should be retured in the response.
 * Your API should handle edge cases appropriately (return an error response, etc) when a file does not exist or is not consistent.

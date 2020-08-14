@@ -2,6 +2,7 @@ import os
 import sys
 import filecmp
 import time
+import uuid
 
 from unittest import TestCase
 from memcached_lib.memcached_client import (
@@ -31,7 +32,8 @@ class MemcachedClientTests(TestCase):
         # I feel is a bad assumption. If given more time, I'd probably include
         # a flag or something to allow for overwriting a file in a cache. For now,
         # if the file exists already, we won't overwrite
-        file_name = 'already_exists.dat'
+        id = uuid.uuid4()
+        file_name = 'tests/data/%s_already_exists.dat' % (id)
         create_file(file_name, ONE_MB * 3)
 
         cache_file(file_name)
