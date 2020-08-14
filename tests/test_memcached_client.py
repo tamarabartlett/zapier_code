@@ -1,4 +1,5 @@
 import os
+import sys
 
 from unittest import TestCase
 from memcached_lib.memcached_client import (
@@ -6,6 +7,7 @@ from memcached_lib.memcached_client import (
     write_one_mb_of_file,
     get_value,
     set_value,
+    get_chunk,
 )
 
 ONE_MB = 1024 * 1024
@@ -16,6 +18,15 @@ def create_file(file_name, size):
         f.close()
 
 class MemcachedClientTests(TestCase):
+
+    def test_chunk_is_less_than_one_mb(self):
+        file_name = 'two_mb_file.txt'
+        two_mb = ONE_MB * 2
+
+        create_file(file_name, two_mb)
+
+        chunk = get_chunk(file_name)
+        self.assertLess(sys.getsizeof(chunk), ONE_MB)
 
     def test_get_first_mb_is_one_mb(self):
         file_name = 'two_mb_file.txt'
