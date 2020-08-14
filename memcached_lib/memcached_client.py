@@ -42,7 +42,6 @@ def file_does_not_exist(file_name):
 
 
 def write_file(file_name):
-    print('Writing File...')
     chunk_size = 1024 * 1023
     f_in = open(file_name, 'rb')
 
@@ -79,11 +78,8 @@ def set_value(key, value):
 
 
 def set_many(dict):
-    print('SetMany...')
-    print(dict)
     client = Client(('localhost', 11211))
     failed_keys = client.set_many(dict, noreply=False)
-    print(failed_keys)
     return failed_keys
 
 

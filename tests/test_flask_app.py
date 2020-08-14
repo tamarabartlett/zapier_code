@@ -26,13 +26,16 @@ class FlaskAppTest(unittest.TestCase):
     def test_posts_data(self):
         # sends HTTP GET request to the application
         # on the specified path
-        result = self.app.post('/', data='derp')
+        # result = self.app.post('/', data={"data":"blah blah"})
+        result = self.app.post('/',
+            data=json.dumps({'data': 'boo yah'}),
+            content_type='application/json',
+            )
 
-        json_data = json.loads(result.data)
+        json_result = json.loads(result.data)
 
         self.assertEqual(result.status_code, 200)
-        self.assertTrue(is_uuid(json_data['id']))
-        self.assertEqual(json_data['id'], 'bler')
+        self.assertTrue(is_uuid(json_result['id']))
 
 
 def is_uuid(uuid):

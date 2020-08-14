@@ -68,18 +68,6 @@ class MemcachedClientTests(TestCase):
         os.rename('tests/bigoldfile_orig.dat','tests/bigoldfile.dat')
 
 
-    def test_get_first_mb_is_one_mb(self):
-        file_name = 'tests/data/two_mb_file.txt'
-        two_mb = ONE_MB * 2
-
-        create_file(file_name, two_mb)
-
-        expected = write_file(file_name)
-
-        actual = get_value('1_two_mb_file.txt')
-        self.assertEqual(expected, actual)
-
-
     def test_file_less_than_50mb_is_true(self):
         file_name = "tests/data/small_file.txt"
         small_file = open(file_name, "w")
