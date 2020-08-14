@@ -2,16 +2,13 @@ import os
 import sys
 from pymemcache.client.base import Client
 
-def get_one_mb_of_file(file_name):
+def write_one_mb_of_file(file_name):
     f_in = open(file_name, 'rb')
-    first_mb = f_in.read(1024 * 1024)
+    one_mb = f_in.read(1024 * 1023)
     f_in.close()
 
-    f_out = open(file_name+'_1', 'wb')
-    f_out.write(first_mb)
-    f_out.close()
-
-    return f_out
+    set_value('1_'+file_name, one_mb)
+    return one_mb
 
 def file_less_than_50mb(file_name):
     size = os.path.getsize(file_name)
@@ -27,4 +24,7 @@ def set_value(key, value):
     client.set(key, value)
 
 if __name__ == '__main__':
-    print(get_cached_value(sys.argv[1],sys.argv[2]))
+    with open('derp.txt', 'wb') as f:
+        f.write(b'0' * 1024 * 1024 *2)
+        f.close()
+    print(write_one_mb_of_file('derp.txt'))

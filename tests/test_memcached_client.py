@@ -3,7 +3,7 @@ import os
 from unittest import TestCase
 from memcached_lib.memcached_client import (
     file_less_than_50mb,
-    get_one_mb_of_file,
+    write_one_mb_of_file,
     get_value,
     set_value,
 )
@@ -23,9 +23,10 @@ class MemcachedClientTests(TestCase):
 
         create_file(file_name, two_mb)
 
-        returned_file = get_one_mb_of_file(file_name)
-        file_size = os.path.getsize('two_mb_file.txt_1')
-        self.assertEqual(ONE_MB, file_size)
+        expected = write_one_mb_of_file(file_name)
+
+        actual = get_value('1_two_mb_file.txt')
+        self.assertEqual(expected, actual)
 
 
     def test_file_less_than_50mb_is_true(self):
