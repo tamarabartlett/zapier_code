@@ -2,7 +2,6 @@ import os
 import sys
 from pymemcache.client.base import Client
 
-# Would normally install a linter
 
 def cache_file(file_name):
     if file_less_than_50mb(file_name):

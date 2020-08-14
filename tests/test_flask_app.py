@@ -23,8 +23,8 @@ class FlaskAppTest(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_posts_data(self):
-        # sends HTTP GET request to the application
+    def test_post_and_get_data(self):
+        # sends HTTP POST request to the application
         # on the specified path
         result = self.app.post('/cache',
             data=json.dumps({'data': 'boo yah'}),
@@ -37,12 +37,13 @@ class FlaskAppTest(unittest.TestCase):
         self.assertEqual(result.status_code, 200)
         self.assertTrue(is_uuid(id))
 
+        # sends HTTP GET with the id
         result = self.app.get('/cache?id='+json_result['id'])
         json_result = json.loads(result.data)
+
         self.assertEqual(result.status_code, 200)
         self.assertEqual(id, json_result['id'])
         self.assertEqual(json_result['data'], 'boo yah')
-
 
 
 def is_uuid(uuid):

@@ -23,7 +23,9 @@ Further, Memcache can evict keys when it runs out of memory. A complete solution
 There are three deliverables for this project:
 
 1. A small library to store and retrieve large files in Memcache
+- This library is in the file /memcached_lib/memcached_client.py
 2. An HTTP API that can be used to interact with the library
+- This is in app.py
 
 ## Specs
 
@@ -50,9 +52,9 @@ dd if=/dev/urandom of=bigoldfile.dat bs=1048576 count=50
 
 !! * You may use a framework for implementing your API (`django`, `flask`, etc)
 !! * Your API should accept a POST request with file contents in the payload and store it using your library. It may be convenient to return an identifier used for retrieval at a later time.
-* Your API should accept a GET request with a file name / identifier and retrieve it using your library. The file contents should be retured in the response.
+!! * Your API should accept a GET request with a file name / identifier and retrieve it using your library. The file contents should be retured in the response.
 * Your API should handle edge cases appropriately (return an error response, etc) when a file does not exist or is not consistent.
-* Your API should have at least one test.
+!!* Your API should have at least one test.
 
 
 ## How we'll review your code:

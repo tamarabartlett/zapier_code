@@ -9,7 +9,7 @@ In one terminal:
 `memcached -m 1000`
 
 In another terminal:
-`export FLASK_APP=hello.py
+`export FLASK_APP=app.py
  flask run`
 
 ### Example POST
