@@ -49,7 +49,7 @@ dd if=/dev/urandom of=bigoldfile.dat bs=1048576 count=50
 ### API:
 
 !! * You may use a framework for implementing your API (`django`, `flask`, etc)
-* Your API should accept a POST request with file contents in the payload and store it using your library. It may be convenient to return an identifier used for retrieval at a later time.
+!! * Your API should accept a POST request with file contents in the payload and store it using your library. It may be convenient to return an identifier used for retrieval at a later time.
 * Your API should accept a GET request with a file name / identifier and retrieve it using your library. The file contents should be retured in the response.
 * Your API should handle edge cases appropriately (return an error response, etc) when a file does not exist or is not consistent.
 * Your API should have at least one test.

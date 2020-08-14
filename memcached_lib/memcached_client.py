@@ -29,7 +29,7 @@ def read_file(file_name):
         f.write(chunk)
     f.close()
 
-    return f
+    return file_name
 
 
 # I would probably normally make every method except read_file and cache_file

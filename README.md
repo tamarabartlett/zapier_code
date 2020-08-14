@@ -12,8 +12,11 @@ In another terminal:
 `export FLASK_APP=hello.py
  flask run`
 
-### Example Call
-`curl -X POST -H "Content-Type: application/json" -d '{"data":"<YOUR DATA HERE>"}'  localhost:5000/`
+### Example POST
+`curl -X POST -H "Content-Type: application/json" -d '{"data":"<YOUR DATA HERE>"}'  localhost:5000/cache`
+
+### Example GET
+`http://localhost:5000/cache?id=<ID GOES HERE>`
 
 ## To Test
 In one terminal: `memcached -m 1000`
