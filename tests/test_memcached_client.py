@@ -1,10 +1,13 @@
 import os
 import sys
+import filecmp
+import time
 
 from unittest import TestCase
 from memcached_lib.memcached_client import (
     file_less_than_50mb,
     write_file,
+    read_file,
     get_value,
     set_value,
     set_many,
@@ -19,6 +22,22 @@ def create_file(file_name, size):
 
 class MemcachedClientTests(TestCase):
 
+        
+
+    def test_save_and_retrieved_files_are_same(self):
+        write_file('tests/bigoldfile.dat')
+
+        # rename original file to have something to compare against
+        os.rename('tests/bigoldfile.dat','tests/bigoldfile_orig.dat')
+        read_file('tests/bigoldfile.dat')
+
+        self.assertTrue(filecmp.cmp('tests/bigoldfile_orig.dat', 'tests/bigoldfile.dat'))
+
+        # rename back to original name, to cleanup
+        # would probably do this in a cleanup method normally
+        os.rename('tests/bigoldfile_orig.dat','tests/bigoldfile.dat')
+
+
     def test_get_first_mb_is_one_mb(self):
         file_name = 'tests/data/two_mb_file.txt'
         two_mb = ONE_MB * 2
@@ -27,7 +46,7 @@ class MemcachedClientTests(TestCase):
 
         expected = write_file(file_name)
 
-        actual = get_value('/tests/data/1_two_mb_file.txt')
+        actual = get_value('1_two_mb_file.txt')
         self.assertEqual(expected, actual)
 
 

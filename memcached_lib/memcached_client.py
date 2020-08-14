@@ -2,14 +2,19 @@ import os
 import sys
 from pymemcache.client.base import Client
 
-# def read_file(file_name):
-#     concat_chunk = b''
-#     count = 0
-#
-#     while client.check_key()
-#     chunk = get_value("%s_%s" % (count, file_name))
-#
-#
+def read_file(file_name):
+    f = open(file_name, "wb+")
+    count = 0
+
+    for i in range (51):
+        # Because the files are max 50MB and are saved in 1MB chunks,
+        # there can be no more than 50 chunks
+        chunk = get_value("%s_%s" % (i, file_name))
+        if chunk is None:
+            break
+        f.write(chunk)
+
+    f.close()
 
 def write_file(file_name):
     f_in = open(file_name, 'rb')
@@ -43,13 +48,14 @@ def set_value(key, value):
     client = Client(('localhost', 11211))
     client.set(key, value)
 
+
 def set_many(dict):
     client = Client(('localhost', 11211))
     failed_keys = client.set_many(dict, noreply=False)
     return failed_keys
 
+
 if __name__ == '__main__':
-    with open('derp.txt', 'wb') as f:
-        f.write(b'0' * 1024 * 1024 *2)
-        f.close()
-    print(write_one_mb_of_file('derp.txt'))
+    # write_file('memcached_lib/bigoldfile.dat')
+    # print("Wrote file")
+    read_file('memcached_lib/bigoldfile.dat')
